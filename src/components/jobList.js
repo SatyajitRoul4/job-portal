@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchJobs } from '../redux/action';
 import JobCard from './JobCard';
 import Navbar from './NavBar';
+import { Grid } from '@mui/material';
 import { filterJobs } from '../helper/filterJobs';
 import { debounce } from 'lodash';
+import { companyNames, companyLinks } from '../helper/utils';
 
 const JobList = () => {
   const [selectedValues, setSelectedValues] = useState({});
@@ -32,7 +34,6 @@ const JobList = () => {
     const filteredJobs = filterJobs(allJobs, selectedValues);
     setAllJobs(filteredJobs);
   }, [selectedValues]);
-
 
 
   useEffect(() => {
@@ -64,24 +65,40 @@ const JobList = () => {
   useEffect(() => {
     if (Object.values(selectedValues).some(value => value.length > 0)) {
       const filteredJobs = filterJobs(jobs, selectedValues);
-      setAllJobs(prevJobs => [...prevJobs, ...filteredJobs]);
+      const filteredJobsWithCompanyInfo = filteredJobs.map(job => {
+        const randomIndex = Math.floor(Math.random() * companyNames.length);
+        return {
+          ...job,
+          companyName: companyNames[randomIndex],
+          companyLink: companyLinks[randomIndex]
+        };
+      });
+      setAllJobs(prevJobs => [...prevJobs, ...filteredJobsWithCompanyInfo]);
     } else {
-      setAllJobs(prevJobs => [...prevJobs, ...jobs]);
+      const jobsWithCompanyInfo = jobs.map(job => {
+        const randomIndex = Math.floor(Math.random() * companyNames.length);
+        return {
+          ...job,
+          companyName: companyNames[randomIndex],
+          companyLink: companyLinks[randomIndex]
+        };
+      });
+      setAllJobs(prevJobs => [...prevJobs, ...jobsWithCompanyInfo]);
     }
   }, [jobs, selectedValues]);
 
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'hidden'}}>
       <Navbar selectedValues={selectedValues} setSelectedValues={setSelectedValues} />
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 20, overflowY: 'hidden', width: '100%' }}>
-        {allJobs.length === 0 && <p>No jobs found</p>}
-        {allJobs?.map(job => (
-          <div key={job.id} style={{ flex: '1 0 auto', minWidth: '300px' }}>
+      <Grid container spacing={2} justifyContent="flex-start">
+        {allJobs.length === 0 && <p style={{ margin: 'auto', marginTop: 2 }}>No jobs found</p>}
+        {allJobs.map(job => (
+          <Grid key={job.id} item xs={12} sm={6} md={4} lg={4}>
             <JobCard job={job} />
-          </div>
+          </Grid>
         ))}
-      </div>
+      </Grid>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
     </div>
