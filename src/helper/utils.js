@@ -85,14 +85,14 @@ export const jobTypes = [
 ];
 
 export const minimumBasePay = [
-    { id: 1, value: '0L' },
-    { id: 2, value: '10L' },
-    { id: 3, value: '20L' },
-    { id: 4, value: '30L' },
-    { id: 5, value: '40L' },
-    { id: 6, value: '50L' },
-    { id: 7, value: '60L' },
-    { id: 8, value: '70L' },
+    { id: 1, value: '10L' },
+    { id: 2, value: '20L' },
+    { id: 3, value: '30L' },
+    { id: 4, value: '40L' },
+    { id: 5, value: '50L' },
+    { id: 6, value: '60L' },
+    { id: 7, value: '70L' },
+    { id: 8, value: '80L' },
 ]
 
 export const techStack = [
@@ -152,4 +152,3 @@ export const companyLinks = [
     "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/2500px-Amazon_icon.svg.png",
     "https://e7.pngegg.com/pngimages/946/191/png-clipart-flipkart-e-commerce-logo-bangalore-chief-executive-others-miscellaneous-blue-thumbnail.png"
 ];
-// ⨯

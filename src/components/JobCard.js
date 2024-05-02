@@ -1,9 +1,9 @@
 import React from 'react';
-import { Card, CardContent, Typography, Button, CardActions, CardMedia } from '@mui/material';
-import { companyNames, companyLinks } from '../helper/utils';
+import { Card, CardContent, Typography, Button, CardActions, Box, Divider, Avatar } from '@mui/material';
+import { companyLinks, companyNames } from '../helper/utils';
 
 const JobCard = ({ job }) => {
-  const { jobRole, location, jobDetailsFromCompany, minExp } = job;
+  const { jobRole, location, minJdSalary, maxJdSalary, jobDetailsFromCompany, minExp } = job;
 
   const companyObjects = companyNames.map((name, index) => ({
     name,
@@ -12,41 +12,74 @@ const JobCard = ({ job }) => {
 
   const randomIndex = Math.floor(Math.random() * companyObjects.length);
   const randomCompany = companyObjects[randomIndex];
+  const minSalary = minJdSalary === null ? 0 : minJdSalary
+  const maxSalary = maxJdSalary === null ? '+' : `- ${maxJdSalary}`
 
-  return ( 
-    <div style={{ width: '100%', maxWidth: 400, margin: '0 auto' }}>
-      <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <CardContent sx={{ flex: '1 0 auto' }}>
-          <Typography component="h2" variant="h5">
-            {jobRole}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            Location: {location}
-          </Typography>
-          <Typography variant="body1">
-            {jobDetailsFromCompany}
-          </Typography>
-        </CardContent>
-        <CardMedia
-          component="img"
-          height="100"
-          image={randomCompany.link}
-          alt={randomCompany.name}
-          sx={{ alignSelf: 'center' }}
-        />
-        <CardContent>
-          <Typography variant="subtitle2" color="textSecondary">
-            Company: {randomCompany.name}
-          </Typography>
-          <Typography variant="subtitle2" color="textSecondary">
-            Experience: {minExp}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Easy Apply</Button>
-        </CardActions>
-      </Card>
-    </div>
+  return (
+    <Card style={{ width: '100%', maxWidth: 300, margin: '0 auto', borderRadius: 10, marginBottom: 16 }}>
+      <CardContent>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Box
+            sx={{
+              width: 48,
+              height: 48,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden',
+              borderRadius: 1,
+              bgcolor: 'background.paper',
+            }}
+          >
+            <Avatar
+              src={randomCompany.link}
+              alt="Company Logo"
+              sx={{
+                maxWidth: '100%',
+                maxHeight: '100%',
+                width: 'auto',
+                height: 'auto',
+              }}
+              variant="square"
+            />
+          </Box>
+        </Box>
+        <Typography variant="h6" sx={{ mt: 1 }}>
+          {randomCompany.name}
+        </Typography>
+        <Typography variant="h6" sx={{ mt: 1 }}>
+          {jobRole ? jobRole.charAt(0).toUpperCase() + jobRole.slice(1) : ''}
+        </Typography>
+
+        <Typography variant="subtitle2" color="textSecondary">
+          {location || 'India'}
+        </Typography>
+
+        <Typography variant="subtitle2" color="textSecondary" sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
+          Estimated Salary: ₹{minSalary} {maxSalary} LPA ✅
+        </Typography>
+
+        <Typography variant="subtitle1" color="textSecondary" sx={{ mt: 1 }}>
+          About Company
+        </Typography>
+
+        <Typography variant="body2" color="textSecondary">
+          {jobDetailsFromCompany}
+        </Typography>
+
+        <Divider sx={{ mt: 2, mb: 1 }} />
+
+        <Typography variant="subtitle2" color="textSecondary">
+          Minimum Experience: {minExp || 0} years
+        </Typography>
+      </CardContent>
+
+      <CardActions>
+        <Button variant="contained" color="primary" size="large" fullWidth>
+          Easy Apply
+        </Button>
+      </CardActions>
+    </Card>
   );
 };
 
